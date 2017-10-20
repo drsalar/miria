@@ -906,7 +906,7 @@ namespace app1
 
             string req = this.cmipoxy(itemId, nodeId, lession, "Initialize", "");
             string sst = req.Substring(req.IndexOf("systime") + 9);
-            sst = sst.Substring(0, sst.IndexOf(','));
+            sst = sst.Substring(0, 10);
             this.startStudyTime = sst;
             this.st = sst;
             int ct = int.Parse(this.st);
