@@ -63,7 +63,6 @@
             this.accountTB.Name = "accountTB";
             this.accountTB.Size = new System.Drawing.Size(143, 21);
             this.accountTB.TabIndex = 2;
-            this.accountTB.Text = "1604030410";
             // 
             // pwdTB
             // 
@@ -71,7 +70,6 @@
             this.pwdTB.Name = "pwdTB";
             this.pwdTB.Size = new System.Drawing.Size(143, 21);
             this.pwdTB.TabIndex = 3;
-            this.pwdTB.Text = "1604030410";
             // 
             // loginBt
             // 
