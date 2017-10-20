@@ -315,6 +315,9 @@
             Defines the max level we would go deep into the html document
             </summary>
         </member>
+        <member name="F:HtmlAgilityPack.HtmlDocument.BackwardCompatibility">
+            <summary>True to stay backward compatible with previous version of HAP. This option does not guarantee 100% compatibility.</summary>
+        </member>
         <member name="F:HtmlAgilityPack.HtmlDocument.OptionAddDebuggingAttributes">
             <summary>
             Adds Debugging attributes to node. Default is false.
