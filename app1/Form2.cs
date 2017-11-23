@@ -207,11 +207,12 @@ namespace app1
                     string nodeId = row.Cells[9].Value.ToString();
                     string lession = row.Cells[0].Value.ToString();
                     string pn = row.Cells[2].Value.ToString();
+                    string count = row.Cells[1].Value.ToString();
                     if (row.Cells[5].Value.ToString() == "完成")
                     {
                         //continue;
                     }
-                    this.studyLession(itemId, nodeId, link, lession, pn, false);
+                    this.studyLession(itemId, nodeId, link, lession, pn, false, count);
 
                 }
             }
@@ -256,10 +257,11 @@ namespace app1
             foreach (var node in nodes)
             {
                 var x1 = node.SelectSingleNode("./h3 ").InnerText;
-                if (!x1.Contains("交互") || !x1.Contains("英语"))
+                if ((!x1.Contains("交互") || !x1.Contains("英语")) && !x1.Contains("商务联系"))
                 {
                     continue;
                 }
+             
                 var x2 = node.SelectSingleNode("./div/div/span[@class='progress-pre left']").InnerText;
                 var x3 = node.SelectSingleNode("./div[@class='mr10 info-block']").InnerText.Trim('\r').Trim('\n').Trim('\t').Trim('\n').Trim('\r');
                 var x4 = node.SelectSingleNode("./div[@class='info-block']").InnerText.Trim('\r').Trim('\n').Trim('\t');
@@ -423,14 +425,14 @@ namespace app1
             return link;
         }
 
-        public void studyLession(string itemId, string nodeId, string link, string lession, string pn, bool fax)
+        public void studyLession(string itemId, string nodeId, string link, string lession, string pn, bool fax, string count)
         {
             this.log = this.log + "\r\n" + "开始答题：" + lession;
             this.logTB.Text = this.log;
             this.heartbeat();
 
             string landingdata = this.landing(link);
-            string startpage = landingdata.Substring(landingdata.IndexOf("startpage = ") + 13);
+            string startpage = landingdata.Substring(landingdata.LastIndexOf("startpage = ") + 13);
             startpage = startpage.Substring(0, startpage.IndexOf('\''));
 
             string prlink = link.Substring(0, link.IndexOf('?'));
@@ -451,7 +453,8 @@ namespace app1
             int cn = int.Parse(pn);
             //string ll = "\"cmi#interactions.0.learner_record\":\"[]\"";
             string ll = ",\"cmi#interactions.0.learner_record\":\"[]\"";
-            while (true)
+            int cccc = int.Parse(count);
+            while (cccc>0)
             {
                 bool xaxa = true;
                 j++;
@@ -547,10 +550,12 @@ namespace app1
                     string ret = this.cmipoxy(itemId, nodeId, lession, "Commit", data);
                 }
 
-                if (pg.Contains("right.jpg"))
+                //if (pg.Contains("right.jpg"))
+                if (cccc > 0)
                 {
                     startpage = pg.Substring(pg.LastIndexOf(".." + homepage) + homepage.Length + 3);
                     startpage = startpage.Substring(0, startpage.IndexOf('.') + 4);
+                    cccc--;
                 }
                 else
                 {
@@ -617,11 +622,12 @@ namespace app1
                 string nodeId = row2.Cells[9].Value.ToString();
                 string lession = row2.Cells[0].Value.ToString();
                 string pn = row2.Cells[2].Value.ToString();
+                string count = row.Cells[1].Value.ToString();
                 if (row2.Cells[5].Value.ToString() == "完成")
                 {
                     continue;
                 }
-                this.studyLession(itemId, nodeId, link, lession, pn, false);
+                this.studyLession(itemId, nodeId, link, lession, pn, false, count);
             }
 
             this.loadLessions(url);
@@ -648,6 +654,10 @@ namespace app1
 
         public void initandcontent(string prlink)
         {
+            if (prlink.Contains("pages"))
+            {
+                prlink = prlink.Substring(0, prlink.LastIndexOf('/'));
+            }
             string req = Http.HttpGet(this.domain + prlink + "/shared/common/init.htm");
             req = Http.HttpGet(this.domain + prlink + "/shared/common/content.htm");
         }
