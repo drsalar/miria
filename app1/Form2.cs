@@ -551,7 +551,7 @@ namespace app1
                 }
 
                 //if (pg.Contains("right.jpg"))
-                if (cccc > 0)
+                if (cccc > 1)
                 {
                     startpage = pg.Substring(pg.LastIndexOf(".." + homepage) + homepage.Length + 3);
                     startpage = startpage.Substring(0, startpage.IndexOf('.') + 4);
@@ -622,7 +622,7 @@ namespace app1
                 string nodeId = row2.Cells[9].Value.ToString();
                 string lession = row2.Cells[0].Value.ToString();
                 string pn = row2.Cells[2].Value.ToString();
-                string count = row.Cells[1].Value.ToString();
+                string count = row2.Cells[1].Value.ToString();
                 if (row2.Cells[5].Value.ToString() == "完成")
                 {
                     continue;
@@ -909,7 +909,7 @@ namespace app1
             this.heartbeat();
 
             string landingdata = this.landing(link);
-            string startpage = landingdata.Substring(landingdata.IndexOf("startpage = ") + 13);
+            string startpage = landingdata.Substring(landingdata.LastIndexOf("startpage = ") + 13);
             startpage = startpage.Substring(0, startpage.IndexOf('\''));
 
             string prlink = link.Substring(0, link.IndexOf('?'));
