@@ -261,7 +261,7 @@ namespace app1
                 {
                     continue;
                 }
-             
+
                 var x2 = node.SelectSingleNode("./div/div/span[@class='progress-pre left']").InnerText;
                 var x3 = node.SelectSingleNode("./div[@class='mr10 info-block']").InnerText.Trim('\r').Trim('\n').Trim('\t').Trim('\n').Trim('\r');
                 var x4 = node.SelectSingleNode("./div[@class='info-block']").InnerText.Trim('\r').Trim('\n').Trim('\t');
@@ -453,8 +453,10 @@ namespace app1
             int cn = int.Parse(pn);
             //string ll = "\"cmi#interactions.0.learner_record\":\"[]\"";
             string ll = ",\"cmi#interactions.0.learner_record\":\"[]\"";
+            string jkl = ",\"cmi#interactions.0.learner_record\":\"[]\"";
+            string ppp = "";
             int cccc = int.Parse(count);
-            while (cccc>0)
+            while (cccc > 0)
             {
                 bool xaxa = true;
                 j++;
@@ -480,7 +482,7 @@ namespace app1
                     qestid = qestid.Substring(0, qestid.IndexOf('"'));
                     ll = ll + ",\"cmi#interactions." + (i + 1).ToString() + ".learner_record\":\"[]\",\"cmi.interactions." + i.ToString() + ".description\":\"Activity Data\",\"cmi.interactions." + i.ToString() + ".type\":\"other\",\"cmi.interactions." + i.ToString() + ".id\":\"" + qestid + "\",";
                     ll = ll + "\"cmi.interactions." + i.ToString() + ".learner_response\":\"" + qestid + ";2:1:false";
-
+                    jkl = "\"cmi#interactions.0.learner_record\":\"[]\",\"cmi.interactions.0.description\":\"Activity Data\",\"cmi.interactions.0.type\":\"other\",\"cmi.interactions.0.id\":\"" + qestid + "\"," + "\"cmi.interactions.0.learner_response\":\"" + qestid + ";2:1:false";
                     string a = pg.Substring(pg.IndexOf("questionId"));
                     a = a.Substring(a.IndexOf('[') + 1);
                     a = a.Substring(0, a.IndexOf(']'));
@@ -522,6 +524,7 @@ namespace app1
                                 }
                             }
                             qq = qq + ";" + questionId[z] + ":" + caa + ":1";
+                            ppp = ppp + ";" + questionId[z] + ":" + caa + ":1";
                         }
                         else if (types[z] == "fidd")
                         {
@@ -533,6 +536,7 @@ namespace app1
                             {
                                 gaps[y] = gaps[y].Trim('"');
                                 qq = qq + ";" + gaps[y] + ":" + gaps[y] + "_0" + ":1";
+                                ppp = ppp + ";" + gaps[y] + ":" + gaps[y] + "_0" + ":1";
                             }
                         }
                         else if (types[z] == "ti")
@@ -541,9 +545,9 @@ namespace app1
                             ans = ans.Substring(ans.IndexOf("\",\"") + 3);
                             ans = ans.Substring(0, ans.IndexOf("\","));
                             qq = qq + ";" + questionId[z] + ":" + ans + ":1";
+                            ppp = ppp + ";" + questionId[z] + ":" + ans + ":1";
                         }
                     }
-
 
 
                     ll = ll + qq + "\"";
@@ -570,7 +574,16 @@ namespace app1
                     string queryd = "/umooc/learner/study.do?operation=loadStudyReport&nodeID=" + nodeId + "&courseID=" + this.courseID + "&inUCC=1&nodeTitle=" + lession.Replace(' ', '+');
                     rqq = Http.HttpGet(this.domain + queryd);
                     string data = "{\"relationid\":\"100851100\",\"cmi.learner_name\":\"" + this.username + "\",\"cmi.learner_id\":\"" + this.userID + "\",\"cmi.activity_title\":\"" + lession + "\",\"ulms.node_id\":" + nodeId + ",\"ulms.item_id\":" + itemId + ",\"startStudyTime\":" + this.st + ",\"systime\":" + ct.ToString() + ",\"cmi.location\":\"" + startpage + "\",\"ulms.customized\":0,\"cmi.exit\":\"suspend\",\"cmi.score.raw\":\"100\",\"cmi.completion_status\":\"completed\"" + ll + "}";
-                    this.cmipoxy(itemId, nodeId, lession, "Commit", data);
+                    string data2 = "{\"relationid\":\"100851100\",\"cmi.learner_name\":\"" + this.username + "\",\"cmi.learner_id\":\"" + this.userID + "\",\"cmi.activity_title\":\"" + lession + "\",\"ulms.node_id\":" + nodeId + ",\"ulms.item_id\":" + itemId + ",\"startStudyTime\":" + this.st + ",\"systime\":" + ct.ToString() + ",\"cmi.location\":\"" + startpage + "\",\"ulms.customized\":0,\"cmi.exit\":\"suspend\",\"cmi.score.raw\":\"100\",\"cmi.completion_status\":\"completed\"," + jkl + ppp + "\"}";
+                    if (lession.Contains("Test") || lession.Contains("QUIZ"))
+                    {
+                        this.cmipoxy(itemId, nodeId, lession, "Commit", data2);
+                    }
+                    else
+                    {
+                        this.cmipoxy(itemId, nodeId, lession, "Commit", data);
+                    }
+
                     this.cmipoxy(itemId, nodeId, lession, "Terminate", data);
                     //string req2 = Http.HttpGet(this.domain + "/umooc/learner/study.do?operation=studyReport&courseID=" + this.courseID);
                     break;
@@ -939,7 +952,7 @@ namespace app1
                 ct += 30 * i;
                 string cts = ct.ToString() + "234";
                 this.loadpage(prlink + "/" + startpage, "_=" + cts);
-                
+
             }
 
             this.cmipoxy(itemId, nodeId, lession, "Terminate", data);
