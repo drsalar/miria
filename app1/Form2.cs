@@ -575,7 +575,7 @@ namespace app1
                     rqq = Http.HttpGet(this.domain + queryd);
                     string data = "{\"relationid\":\"100851100\",\"cmi.learner_name\":\"" + this.username + "\",\"cmi.learner_id\":\"" + this.userID + "\",\"cmi.activity_title\":\"" + lession + "\",\"ulms.node_id\":" + nodeId + ",\"ulms.item_id\":" + itemId + ",\"startStudyTime\":" + this.st + ",\"systime\":" + ct.ToString() + ",\"cmi.location\":\"" + startpage + "\",\"ulms.customized\":0,\"cmi.exit\":\"suspend\",\"cmi.score.raw\":\"100\",\"cmi.completion_status\":\"completed\"" + ll + "}";
                     string data2 = "{\"relationid\":\"100851100\",\"cmi.learner_name\":\"" + this.username + "\",\"cmi.learner_id\":\"" + this.userID + "\",\"cmi.activity_title\":\"" + lession + "\",\"ulms.node_id\":" + nodeId + ",\"ulms.item_id\":" + itemId + ",\"startStudyTime\":" + this.st + ",\"systime\":" + ct.ToString() + ",\"cmi.location\":\"" + startpage + "\",\"ulms.customized\":0,\"cmi.exit\":\"suspend\",\"cmi.score.raw\":\"100\",\"cmi.completion_status\":\"completed\"," + jkl + ppp + "\"}";
-                    if (lession.Contains("Test") || lession.Contains("QUIZ"))
+                    if (lession.Contains("Test") || lession.Contains("QUIZ") || lession.Contains("LEVEL"))
                     {
                         this.cmipoxy(itemId, nodeId, lession, "Commit", data2);
                     }
@@ -1003,10 +1003,10 @@ namespace app1
 
                     this.log = this.log + "\r\n" + "章节：" + chapter;
                     this.logTB.Text = this.log;
-                    int tttt = times;
+                    int tttt = 1;
                     if (chapter[0] != 'A' && chapter[0] != 'B' && chapter[0] != 'C')
                     {
-                        tttt *= 1;
+                        tttt = 8;
                     }
                     foreach (DataGridViewRow row2 in this.dataGridView4.Rows)
                     {
@@ -1064,10 +1064,10 @@ namespace app1
 
                         this.log = this.log + "\r\n" + "章节：" + chapter;
                         this.logTB.Text = this.log;
-                        int tttt = times;
+                        int tttt = 1;
                         if (chapter[0] != 'A' && chapter[0] != 'B' && chapter[0] != 'C')
                         {
-                            tttt *= 1;
+                            tttt = 8;
                         }
                         foreach (DataGridViewRow row4 in this.dataGridView4.Rows)
                         {
@@ -1144,7 +1144,7 @@ namespace app1
             int min = int.Parse(this.minTB.Text) * 60;
             int max = int.Parse(this.maxTB.Text) * 60;
             Random r = new Random();
-            et -= r.Next(min, max);
+            et -= r.Next(min, max) * times;
             string data = "{\"cmi.learner_name\":\"" + this.username + "\",\"cmi.learner_id\":\"" + this.userID + "\",\"cmi.activity_title\":\"" + lession + "\",\"ulms.node_id\":" + nodeId + ",\"ulms.item_id\":" + itemId + ",\"startStudyTime\":" + this.st + ",\"systime\":" + et.ToString() + ",\"cmi.location\":\"" + startpage + "\",\"ulms.customized\":0,\"cmi.exit\":\"suspend\"}";
             //for (int i = 0; i < times && this.ssss; i++)
             //{
